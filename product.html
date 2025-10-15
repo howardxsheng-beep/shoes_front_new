@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品列表</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.8/dist/axios.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">    
+  <link rel="stylesheet" crossorigin href="/shoes_front_new/assets/output-BrXrtM8r.css">
+</head>
+<style>
+    
+</style>
+<body>
+
+<!-- header -->
+    <header class="h-auto  sm:h-[80px] flex items-center justify-between">
+        <div class="flex  items-center justify-between mx-auto w-[1296px] px-3 sm:px-0">
+            <div class="flex items-center gap-10">
+                <img src="./img/logo.png" alt="URBNSTEP" class="h-[46px] w-[129px]" >
+                <a href="#" class="text-nectral-900 text-label-md font-weight-medium hidden hover:opacity-60 sm:block">商品列表</a>
+                <a href="#" class="text-nectral-900 text-label-md font-weight-medium hidden hover:opacity-60 sm:block">品牌故事</a>
+            </div>
+
+            <a href="#">
+            <img src="/shoes_front_new/img/person.svg" alt="帳號" class="w-[18px] h-[18px] hover:opacity-60">
+            </a>
+        </div>
+    
+    </header>
+<!-- nav list -->
+    <div class="flex-col px-3  mt-4 max-w-[1296px] mx-auto sm:px-0">
+        <ul class="flex text-label-sm text-neutral-600 " >
+            <li class="text-label-sm sm:text-label-md">
+                <a href="#">首頁</a>
+            </li>
+            <li> / </li>
+            <li class="text-label-sm sm:text-label-md">
+                <a href="#">女鞋</a>
+            </li>
+            <li> / </li>
+            <li class=" text-label-sm text-neutral-900 sm:text-label-md">
+                <a href="#">所有商品</a>
+            </li> 
+        </ul>   
+        
+        <h2 class="text-h4 h-12 flex items-center mt-3 sm:text-h3">
+            女鞋
+        </h2>
+    </div>
+<!-- 商品列表 -->
+    <section class=" max-w-[1296px] mx-auto">
+        <div class="grid sm:grid-cols-[1fr_4fr] ">
+              <aside class="hidden sm:block">
+                <ul class="space-y-4 text-label-md font-bold text-neutral-900">
+                    <li class="text-primary-300 cursor-pointer hover:text-primary-400">所有商品</li>
+                    <li class="cursor-pointer hover:text-primary-400">慢跑鞋</li>
+                    <li class="cursor-pointer hover:text-primary-400">滑板鞋</li>
+                    <li class="cursor-pointer hover:text-primary-400">厚底鞋</li>
+                    <li class="cursor-pointer hover:text-primary-400">限定 / 聯名企劃</li>
+                </ul>
+            </aside>
+            <div>
+            <!-- 商品卡片 grid -->
+             <ul class="grid grid-cols-2 sm:grid-cols-3 product-list gap-3 sm:gap-6 px-3 xl:px-0 ">
+
+            
+            </ul>
+        <nav class="flex justify-center items-center gap-2 mt-10" aria-label="Page navigation">
+    
+        <!-- 頁碼 -->
+        <ul class="flex gap-2 text-label-md font-medium page-list">
+
+        </ul>
+
+        </nav>
+        </div>
+       <!-- page -->
+ 
+        </div>
+
+    </section>
+
+
+<!-- 優惠註冊 -->
+    <section class="w-full h-[88px] bg-[var(--color-primary-200)]  items-center flex justify-center gap-4">
+
+        <h2 class="text-h5 font-bold 
+        sm:text-h4 ">
+        加入會員取得9折優惠</h2>
+        <a href="#" class="bg-[var(--color-neutral-900)] text-text-on-dark w-[99px] h-[40px] inline-flex items-center justify-center rounded-xs
+        sm:text-h5  sm:w-[115px] sm:h-[48px] hover:opacity-70">
+        馬上註冊</a>
+
+    </section>
+
+<!-- Footer -->
+     <footer class="px-3 mt-8">
+      <div class="mx-auto w-full max-w-[1296px]">
+      <div class="relative h-[154px]  flex flex-col 
+      sm:flex-row sm:justify-between sm:h-12">
+
+      <img src="./img/logo.png" alt="footer" class="h-[46px] w-[129px] relative left-[-10px] sm:left-[0px]">
+      <div class="flex flex-col sm:flex-row sm:gap-10">
+      <a href="#" class="flex h-[48px] items-center text-label-md mt-2 hover:opacity-70
+      sm:mt-0">商品列表</a>
+      <a href="#" class="flex h-[48px] items-center text-label-md mt-1 hover:opacity-70
+      sm:mt-0">品牌故事</a>
+      </div>
+      </div>
+
+      <div class="flex flex-col mt-6  justify-end items-center text-p-sm text-neutral-600  gap-2 mb-8 border-t-1">
+        <div>Copyright ©2025 URBNSTYLE</div>
+        <div>All Rights Reserved.</div>
+      </div>
+      </div>
+     </footer>
+<!-- JS -->
+
+
+
+<script>
+  const productList = document.querySelector('.product-list');
+  const pageList = document.querySelector('.page-list'); // ← <ul class="page-list">
+  let products = [];
+  let currentPage = 1;
+  const itemsPerPage = 9;
+
+  // load商品
+  async function loadProducts() {
+    try {
+      const res = await axios.get('./products.json');
+      products = res.data;
+      currentPage = 1;
+      renderProductList(products);
+      renderPagination(); // 初始化分頁
+    } catch (err) {
+      console.error('❌ 讀取失敗：', err);
+    }
+  }
+
+  //  商品render
+  function renderProductList(data) {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageData = data.slice(start, end);
+
+    const html = pageData.map(item => `
+      <li>
+        <a href="#" class="block">
+          <figure class="aspect-square overflow-hidden">
+            <img src="${item.pic}" alt="${item.product_name}" 
+                 class="h-full w-full object-cover hover:opacity-80 transition" />
+          </figure>
+          <h3 class="mt-2 text-h6 font-bold text-neutral-900">${item.product_name}</h3>
+          <p class="text-label-md text-neutral-900">NT$${item.price.toLocaleString()}</p>
+        </a>
+      </li>
+    `).join('');
+
+    productList.innerHTML = html;
+  }
+
+  // 最多5格
+  function renderPagination() {
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+    let html = '';
+
+    // 上一頁btn
+    html += `
+      <button class="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-neutral-800 disabled:opacity-40"
+        ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">
+        <img src="img/left-arror.svg" alt="上一頁" 
+             class="w-5 h-5 ${currentPage === 1 ? 'opacity-20' : 'opacity-40 hover:opacity-100'}" />
+      </button>
+    `;
+
+    let pages = [];
+
+    if (totalPages <= 5) {
+      pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    } else {
+
+      if (currentPage <= 2) {
+        pages = [1, 2, 3, '...', totalPages];
+
+      } else if (currentPage >= totalPages - 1) {
+        pages = [totalPages - 2, totalPages - 1, totalPages];
+      } else {
+        pages = [currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+      }
+    }
+
+    // 生成btn
+    pages.forEach(page => {
+      if (page === '...') {
+        html += dot();
+      } else {
+        const active = page === currentPage ? 'bg-primary-300 font-bold' : '';
+        html += `
+          <button class="page-btn w-10 h-10 flex items-center justify-center hover:bg-primary-300 ${active}"
+            onclick="changePage(${page})">
+            ${page}
+          </button>
+        `;
+      }
+    });
+
+    //  下一頁btn
+    html += `
+      <button class="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-neutral-800 disabled:opacity-40"
+        ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">
+        <img src="img/right-arror.svg" alt="下一頁" 
+             class="w-5 h-5 ${currentPage === totalPages ? 'opacity-20' : 'opacity-40 hover:opacity-100'}" />
+      </button>
+    `;
+
+    pageList.innerHTML = html;
+  }
+
+  // ...
+  function dot() {
+    return `<span class="w-10 h-10 flex items-center justify-center text-neutral-400">...</span>`;
+  }
+
+  //  換頁
+  function changePage(page) {
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+    if (page < 1 || page > totalPages) return; // 超出範圍不動
+
+    currentPage = page;
+    renderProductList(products);
+    renderPagination();
+  }
+
+  
+  loadProducts();
+</script>
+</body>
+</html>
